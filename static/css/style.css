@@ -1835,5 +1835,257 @@ body.password-unlocked .secret-heart {
   .countdown div {
     padding: 20px 5px;
   }
+  
+}
+/* =========================================================
+   🎬 PREMIUM FINAL SURPRISE ANIMATION
+========================================================= */
+
+.surprise-overlay {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.08);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(.16,1,.3,1),
+    visibility 0.8s;
+}
+
+.surprise-overlay:not(.hidden) {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+/* Background cinematic glow */
+.surprise-overlay::before {
+  content: "";
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 80, 160, .25),
+    rgba(180, 50, 200, .12) 40%,
+    transparent 70%
+  );
+  filter: blur(40px);
+  animation: finalGlow 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Overlay content */
+.overlay-content {
+  position: relative;
+  z-index: 10;
+  transform: translateY(60px) scale(.85);
+  opacity: 0;
+}
+
+.surprise-overlay:not(.hidden) .overlay-content {
+  animation: finalCardReveal 1.2s cubic-bezier(.16,1,.3,1) .3s forwards;
+}
+
+/* Heart animation */
+.mini-heart {
+  animation: finalHeartBeat 1.5s ease-in-out infinite;
+}
+
+/* Photo cinematic animation */
+.overlay-content img {
+  transform: scale(.7);
+  opacity: 0;
+}
+
+.surprise-overlay:not(.hidden) .overlay-content img {
+  animation: finalPhotoReveal 1.2s cubic-bezier(.16,1,.3,1) .8s forwards;
+}
+
+/* Heading reveal */
+.overlay-content h2 {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.surprise-overlay:not(.hidden) .overlay-content h2 {
+  animation: finalTextReveal 1s ease 1.4s forwards;
+}
+
+/* Paragraph reveal */
+.overlay-content p:not(.eyebrow) {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.surprise-overlay:not(.hidden) .overlay-content p:not(.eyebrow) {
+  animation: finalTextReveal 1s ease 1.7s forwards;
+}
+
+/* Eyebrow */
+.overlay-content .eyebrow {
+  opacity: 0;
+}
+
+.surprise-overlay:not(.hidden) .overlay-content .eyebrow {
+  animation: finalFade 1s ease 1.2s forwards;
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes finalGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: .6;
+  }
+
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+@keyframes finalCardReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) scale(.85);
+    filter: blur(15px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes finalPhotoReveal {
+  0% {
+    opacity: 0;
+    transform: scale(.7) rotate(-8deg);
+    filter: blur(15px);
+  }
+
+  70% {
+    transform: scale(1.08) rotate(2deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes finalHeartBeat {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 5px #ff69b4);
+  }
+
+  50% {
+    transform: scale(1.25);
+    filter:
+      drop-shadow(0 0 15px #ff69b4)
+      drop-shadow(0 0 35px #ff1493);
+  }
+}
+
+@keyframes finalTextReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes finalFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* =========================
+   💖 FLOATING HEARTS
+========================= */
+
+.overlay-hearts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.overlay-hearts::before,
+.overlay-hearts::after {
+  content: "❤️ ✨ 💕 ✦ ❤️ ✨ 💕";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  font-size: 25px;
+  letter-spacing: 40px;
+  opacity: .7;
+  animation: floatingHearts 8s linear infinite;
+}
+
+.overlay-hearts::before {
+  top: 100%;
+}
+
+.overlay-hearts::after {
+  top: 120%;
+  animation-delay: 4s;
+}
+
+@keyframes floatingHearts {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: .8;
+  }
+
+  100% {
+    transform: translateY(-120vh);
+    opacity: 0;
+  }
+}
+
+
+/* =========================
+   📱 MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+  .surprise-overlay::before {
+    width: 400px;
+    height: 400px;
+  }
+
+  .overlay-content img {
+    width: 180px;
+    height: 180px;
+  }
+
+  .overlay-content h2 {
+    font-size: 40px;
+  }
 
 }
