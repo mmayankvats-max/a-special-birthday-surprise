@@ -103,7 +103,7 @@ const memories = [
     caption: "Tumhare saath bitaya har moment mere liye special hai."
   },
   {
-    image: "memories/memory2.jpg",
+    image: "memories/memory2.JPG",
     date: "Forever & Always ❤️",
     title: "Forever & Always",
     caption: "Bas aise hi hamesha mere saath rehna. ❤️"
