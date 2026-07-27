@@ -1,0 +1,21 @@
+{
+  "name": "Soni Khudi ❤️",
+  "short_name": "Soni Khudi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0610",
+  "theme_color": "#ff4f9a",
+  "description": "A special birthday surprise ❤️",
+  "icons": [
+    {
+      "src": "/static/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
