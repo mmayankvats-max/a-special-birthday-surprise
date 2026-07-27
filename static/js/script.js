@@ -1,4 +1,4 @@
-const birthdayDate = new Date("2026-10-02T00:00:00").getTime();
+const birthdayDate = new Date("2026-10-03T00:00:00").getTime();
 
 const personalMessage = `My love, on your special day I just want you to know how grateful I am that you are part of my life. You make ordinary moments feel extraordinary, and your smile can make even the hardest days feel lighter. I hope this new year of your life brings you endless happiness, beautiful adventures, and every dream your heart is wishing for. Happy Birthday, my love. ❤️`;
 
