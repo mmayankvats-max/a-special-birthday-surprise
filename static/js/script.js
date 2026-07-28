@@ -616,3 +616,65 @@ if (secretCloseBtn) {
   });
 
 }
+/* =========================
+   BIRTHDAY NOTIFICATIONS
+========================= */
+
+const enableNotifications =
+  document.getElementById("enableNotifications");
+
+const notificationStatus =
+  document.getElementById("notificationStatus");
+
+if (enableNotifications) {
+
+  enableNotifications.addEventListener("click", async () => {
+
+    // Browser notification support check
+    if (!("Notification" in window)) {
+
+      if (notificationStatus) {
+        notificationStatus.textContent =
+          "Sorry, your browser does not support notifications.";
+      }
+
+      return;
+    }
+
+    // Ask for permission
+    const permission = await Notification.requestPermission();
+
+    if (permission === "granted") {
+
+      if (notificationStatus) {
+        notificationStatus.textContent =
+          "🔔 Notifications are enabled! ❤️";
+      }
+
+      // Test notification
+      new Notification(
+        "🎂 Birthday Surprise Enabled!",
+        {
+          body: "Your special birthday surprise is ready! ❤️🎁"
+        }
+      );
+
+    } else if (permission === "denied") {
+
+      if (notificationStatus) {
+        notificationStatus.textContent =
+          "Notifications are blocked. You can enable them from browser settings.";
+      }
+
+    } else {
+
+      if (notificationStatus) {
+        notificationStatus.textContent =
+          "Notification permission was not selected.";
+      }
+
+    }
+
+  });
+
+}
