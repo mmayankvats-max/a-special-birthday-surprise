@@ -617,7 +617,7 @@ if (secretCloseBtn) {
 
 }
 /* =========================
-   BIRTHDAY NOTIFICATIONS
+   BIRTHDAY PUSH NOTIFICATIONS
 ========================= */
 
 const enableNotifications =
@@ -626,56 +626,142 @@ const enableNotifications =
 const notificationStatus =
   document.getElementById("notificationStatus");
 
+const VAPID_PUBLIC_KEY =
+  "BIBDDHLa_lgT0cXum7TWg5BKYpVmmfqKp-xaladBHjRevz0HYVzNY6pFTgb3VhiLwwkPo4RqzNnkxBMJ7vTAUf0";
+
+
+function urlBase64ToUint8Array(base64String) {
+
+  const padding = "=".repeat(
+    (4 - (base64String.length % 4)) % 4
+  );
+
+  const base64 =
+    (base64String + padding)
+      .replace(/-/g, "+")
+      .replace(/_/g, "/");
+
+  const rawData =
+    window.atob(base64);
+
+  return Uint8Array.from(
+    [...rawData].map(char => char.charCodeAt(0))
+  );
+
+}
+
+
 if (enableNotifications) {
 
-  enableNotifications.addEventListener("click", async () => {
+  enableNotifications.addEventListener(
+    "click",
+    async () => {
 
-    // Browser notification support check
-    if (!("Notification" in window)) {
+      try {
 
-      if (notificationStatus) {
-        notificationStatus.textContent =
-          "Sorry, your browser does not support notifications.";
-      }
+        if (!("Notification" in window)) {
 
-      return;
-    }
+          notificationStatus.textContent =
+            "Your browser does not support notifications.";
 
-    // Ask for permission
-    const permission = await Notification.requestPermission();
+          return;
 
-    if (permission === "granted") {
-
-      if (notificationStatus) {
-        notificationStatus.textContent =
-          "🔔 Notifications are enabled! ❤️";
-      }
-
-      // Test notification
-      new Notification(
-        "🎂 Birthday Surprise Enabled!",
-        {
-          body: "Your special birthday surprise is ready! ❤️🎁"
         }
-      );
 
-    } else if (permission === "denied") {
 
-      if (notificationStatus) {
+        // Ask notification permission
+        const permission =
+          await Notification.requestPermission();
+
+
+        if (permission !== "granted") {
+
+          notificationStatus.textContent =
+            "Notification permission was not granted.";
+
+          return;
+
+        }
+
+
+        // Get Service Worker
+        const registration =
+          await navigator.serviceWorker.ready;
+
+
+        // Subscribe to Push Notifications
+        const subscription =
+          await registration.pushManager.subscribe({
+
+            userVisibleOnly: true,
+
+            applicationServerKey:
+              urlBase64ToUint8Array(
+                VAPID_PUBLIC_KEY
+              )
+
+          });
+
+
+        // Send subscription to Flask backend
+        const response =
+          await fetch("/api/subscribe", {
+
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify(
+                subscription
+              )
+
+          });
+
+
+        const result =
+          await response.json();
+
+
+        if (result.success) {
+
+          notificationStatus.textContent =
+            "🔔 Birthday notifications are enabled! ❤️";
+
+          // Test notification
+          new Notification(
+            "🎂 Birthday Surprise Enabled!",
+            {
+              body:
+                "Your birthday surprise is successfully connected! ❤️🎁"
+            }
+          );
+
+        } else {
+
+          notificationStatus.textContent =
+            "Something went wrong. Please try again.";
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "Push subscription error:",
+          error
+        );
+
         notificationStatus.textContent =
-          "Notifications are blocked. You can enable them from browser settings.";
-      }
+          "Unable to enable notifications.";
 
-    } else {
-
-      if (notificationStatus) {
-        notificationStatus.textContent =
-          "Notification permission was not selected.";
       }
 
     }
-
-  });
+  );
 
 }
 /* =========================
